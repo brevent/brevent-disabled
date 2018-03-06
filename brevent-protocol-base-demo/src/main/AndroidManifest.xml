@@ -14,10 +14,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver
-            android:name=".receiver.BreventServerReceiver"
-            android:exported="true"
-            android:permission="android.permission.DEVICE_POWER" />
+
+        <activity
+            android:name=".DemoActivity2"
+            android:label="@string/app_name2"
+            android:process=":activity2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
