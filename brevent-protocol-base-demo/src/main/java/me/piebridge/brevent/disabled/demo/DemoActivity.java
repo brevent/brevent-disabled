@@ -12,10 +12,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-import me.piebridge.brevent.protocol.BreventDisabledModule;
+import me.piebridge.brevent.protocol.Brevent;
+import me.piebridge.brevent.protocol.BreventDisabled;
 
 /**
- * Created by thom on 2018/2/25.
+ * Created by thom on 2018/3/17.
  */
 public class DemoActivity extends Activity {
 
@@ -28,7 +29,13 @@ public class DemoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         output = findViewById(R.id.output);
-        if (BreventDisabledModule.hasBrevent(this)) {
+        Brevent.with(this, new BreventDisabled());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (BreventDisabled.getInstance().hasBrevent()) {
             checkAsync();
             checkPermission();
         } else {
@@ -54,10 +61,10 @@ public class DemoActivity extends Activity {
     }
 
     private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, BreventDisabledModule.PERMISSION)
+        if (ContextCompat.checkSelfPermission(this, BreventDisabled.PERMISSION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[] {BreventDisabledModule.PERMISSION},
+                    new String[] {BreventDisabled.PERMISSION},
                     MY_PERMISSIONS_REQUEST_BREVENT_DISABLED);
         }
     }
@@ -99,17 +106,12 @@ public class DemoActivity extends Activity {
             enable(sb, packageName, true);
             checkDisabled(sb, packageName);
             checkDisabledPackages(sb);
-
-            sb.append("token（注意安全）: ");
-            sb.append(BreventDisabledModule.getToken());
-            sb.append("\n");
-            updateMessage(sb);
         }
     }
 
     private boolean checkStatus(StringBuilder sb) throws IOException {
         sb.append("停用: ");
-        boolean result = BreventDisabledModule.isAvailable();
+        boolean result = BreventDisabled.getInstance().isAvailable();
         if (result) {
             sb.append("支持\n");
         } else {
@@ -129,7 +131,7 @@ public class DemoActivity extends Activity {
             sb.append("用户停用");
         }
         sb.append("状态: ");
-        if (BreventDisabledModule.setPackageEnabled(packageName, 0, enable)) {
+        if (BreventDisabled.getInstance().setPackageEnabled(packageName, 0, enable)) {
             sb.append("成功\n");
         } else {
             sb.append("失败\n");
@@ -153,7 +155,7 @@ public class DemoActivity extends Activity {
     private void checkDisabled(StringBuilder sb, String packageName) throws IOException {
         sb.append(packageName);
         sb.append("是否用户停用: ");
-        if (BreventDisabledModule.isDisabled(packageName, 0)) {
+        if (BreventDisabled.getInstance().isDisabled(packageName, 0)) {
             sb.append("是\n");
         } else {
             sb.append("否\n");
@@ -163,7 +165,7 @@ public class DemoActivity extends Activity {
 
     private void checkDisabledPackages(StringBuilder sb) throws IOException {
         sb.append("停用应用: ");
-        List<String> disabledPackages = BreventDisabledModule.getDisabledPackages(0);
+        List<String> disabledPackages = BreventDisabled.getInstance().getDisabledPackages(0);
         if (disabledPackages == null) {
             sb.append("空\n");
         } else {
