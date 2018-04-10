@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 24
         maxSdkVersion 27
-        versionCode 3
-        versionName '0.3'
+        versionCode 4
+        versionName '0.4'
     }
     buildTypes {
         release {
@@ -31,7 +31,7 @@ if (rootProject.file('brevent-protocol-base').exists()) {
     }
 } else {
     dependencies {
-        implementation 'me.piebridge:brevent-protocol-base:3.0.6'
-        implementation 'com.android.support:support-compat:27.1.0'
+        implementation 'me.piebridge:brevent-protocol-base:3.0.7'
+        implementation 'com.android.support:support-compat:27.1.1'
     }
 }

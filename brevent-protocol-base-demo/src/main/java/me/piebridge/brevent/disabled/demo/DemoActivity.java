@@ -39,7 +39,7 @@ public class DemoActivity extends Activity {
             checkAsync();
             checkPermission();
         } else {
-            updateMessage("没有安装黑域，或者黑域不支持停用 API。");
+            updateMessage("没有安装黑阈，或者黑阈不支持停用 API。");
         }
     }
 
